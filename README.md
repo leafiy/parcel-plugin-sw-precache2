@@ -8,7 +8,7 @@ Inspired by https://github.com/cyyyu/parcel-plugin-sw-precache
 
 `yarn add -D parcel-plugin-sw-precache2`
 
-### Configurations (add to packages.json in 'cache' section)
+### Configurations (add to packages.json in 'sw' section)
 
 - **swSrc[String]** merge your own sw rules to service-worker.js
 - **minify[Boolean]**
