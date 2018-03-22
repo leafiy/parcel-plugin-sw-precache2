@@ -1,0 +1,14 @@
+{
+  "name": "parcel-plugin-sw-precache2",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "leafiy <t@leafiy.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "parcel-bundler": "^1.1.0"
+  },
+  "dependencies": {
+    "sw-precache": "^5.2.1",
+    "uglify-es": "^3.3.9"
+  }
+}
