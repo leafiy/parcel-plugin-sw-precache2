@@ -4,26 +4,21 @@ const swPrecache = require('sw-precache')
 const UglifyJS = require('uglify-es')
 
 const DEFAULT_FILENAME = 'service-worker.js'
-const DEFAULT_CACHE_ID = `parcel-plugin-sw-precache`
 const DEFAULT_CACHE_FILE_TYPE = `js,css,png,jpg,gif,svg,eot,ttf,woff,woff2`
 const DEFAULT_IGNORE = [
     /\.map$/,
-    /manifest\.json$/,
     /service-worker\.js$/
 ]
-const DEFAULT_FALLBACK = '/index.html'
 
-
-const getServiceWorkder = ({ targetDir, cacheId = DEFAULT_CACHE_ID, customOptions = {}, rootDir }) => {
+const getServiceWorkder = ({ outDir, customOptions = {}, rootDir }) => {
     const options = {
-        cacheId: DEFAULT_CACHE_ID,
-        dontCacheBustUrlsMatching: /\.\w{8}\./,
-        navigateFallback: DEFAULT_FALLBACK,
+        navigateFallback: '/index.html',
         staticFileGlobs: [
-            targetDir + `/**/*.{${DEFAULT_CACHE_FILE_TYPE}}`
+            `dist/*.{${DEFAULT_CACHE_FILE_TYPE}}`,
+            `dist/index.html`
         ],
         staticFileGlobsIgnorePatterns: DEFAULT_IGNORE,
-        stripPrefix: targetDir
+        stripPrefix: 'dist/'
     }
     return swPrecache.generate(Object.assign(options, customOptions)).catch(err => {
         throw err
@@ -32,14 +27,11 @@ const getServiceWorkder = ({ targetDir, cacheId = DEFAULT_CACHE_ID, customOption
 
 
 module.exports = bundler => {
-    const targetDir = bundler.options.outDir
-    const { rootDir } = bundler.options
+    const { rootDir, outDir } = bundler.options
     bundler.on('bundled', (bundle) => {
-
-        const pkg = require(bundler.mainAsset.package.pkgfile)
-        const serviceWorkerFilePath = path.resolve(targetDir, DEFAULT_FILENAME)
+        const serviceWorkerFilePath = path.resolve(outDir, DEFAULT_FILENAME)
         const customOptions = bundle.entryAsset.package.sw
-        getServiceWorkder({ targetDir, cacheId: pkg.swCacheId, customOptions, rootDir }).then(codes => {
+        getServiceWorkder({ outDir, customOptions, rootDir }).then(codes => {
             if (customOptions.minify) {
                 const compressedCodes = {}
                 compressedCodes[fileName] = codes
