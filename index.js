@@ -18,11 +18,11 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
         fileName: DEFAULT_FILENAME,
         navigateFallback: '/index.html',
         staticFileGlobs: [
-            `dist/*.{${DEFAULT_CACHE_FILE_TYPE}}`,
-            `dist/index.html`
+            `${distDir}/*.{${DEFAULT_CACHE_FILE_TYPE}}`,
+            `${distDir}/index.html`
         ],
         staticFileGlobsIgnorePatterns: DEFAULT_IGNORE,
-        stripPrefix: 'dist/'
+        stripPrefix: `${distDir}/`
     }
     return swPrecache.generate(Object.assign({}, options, customOptions)).catch(err => {
         throw err
