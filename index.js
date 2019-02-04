@@ -4,7 +4,7 @@ const swPrecache = require('sw-precache')
 const UglifyJS = require('uglify-es')
 
 const DEFAULT_FILENAME = 'service-worker.js'
-const DEFAULT_CACHE_FILE_TYPE = `js,css,png,jpg,gif,svg,eot,ttf,woff,woff2`
+const DEFAULT_CACHE_FILE_TYPE = `js,css,png,jpg,gif,svg,ico,eot,ttf,woff,woff2`
 const DEFAULT_IGNORE = [
     /\.map$/,
     /service-worker\.js$/
