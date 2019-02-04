@@ -45,8 +45,9 @@ module.exports = bundler => {
                 compressedCodes[customOptions.fileName] = codes
                 codes = UglifyJS.minify(compressedCodes).code
             }
+
             if (customOptions.swSrc) {
-                codes += readFileSync(path.join(rootDir, customOptions.swSrc))
+                codes += UglifyJS.minify(readFileSync(path.join(rootDir, customOptions.swSrc)))
             }
             writeFileSync(serviceWorkerFilePath, codes)
             console.log(`😁 Service worker "${distDir}/${customOptions.fileName}" generated successfully.`)
