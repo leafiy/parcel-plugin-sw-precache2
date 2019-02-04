@@ -36,8 +36,9 @@ module.exports = bundler => {
     distDir = outDir.replace(rootDir, '').substr(1)
 
     bundler.on('bundled', (bundle) => {
-        const serviceWorkerFilePath = path.resolve(outDir, DEFAULT_FILENAME)
         const customOptions = bundle.entryAsset.package.sw
+        const serviceWorkerFilePath = path.resolve(outDir, customOptions.fileName)
+
         getServiceWorker({ outDir, customOptions, rootDir }).then(codes => {
             if (customOptions.minify) {
                 const compressedCodes = {}
