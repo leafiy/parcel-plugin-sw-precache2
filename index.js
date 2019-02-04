@@ -12,6 +12,7 @@ const DEFAULT_IGNORE = [
 ]
 
 const getServiceWorkder = ({ outDir, customOptions = {}, rootDir }) => {
+const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
     const options = {
         navigateFallback: '/index.html',
         staticFileGlobs: [
@@ -32,7 +33,7 @@ module.exports = bundler => {
     bundler.on('bundled', (bundle) => {
         const serviceWorkerFilePath = path.resolve(outDir, DEFAULT_FILENAME)
         const customOptions = bundle.entryAsset.package.sw
-        getServiceWorkder({ outDir, customOptions, rootDir }).then(codes => {
+        getServiceWorker({ outDir, customOptions, rootDir }).then(codes => {
             if (customOptions.minify) {
                 const compressedCodes = {}
                 compressedCodes[fileName] = codes
