@@ -15,6 +15,7 @@ let distDir = ''
 
 const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
     const options = {
+        fileName: DEFAULT_FILENAME,
         navigateFallback: '/index.html',
         staticFileGlobs: [
             `dist/*.{${DEFAULT_CACHE_FILE_TYPE}}`,
@@ -23,7 +24,7 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
         staticFileGlobsIgnorePatterns: DEFAULT_IGNORE,
         stripPrefix: 'dist/'
     }
-    return swPrecache.generate(Object.assign(options, customOptions)).catch(err => {
+    return swPrecache.generate(Object.assign({}, options, customOptions)).catch(err => {
         throw err
     })
 }
@@ -39,7 +40,7 @@ module.exports = bundler => {
         getServiceWorker({ outDir, customOptions, rootDir }).then(codes => {
             if (customOptions.minify) {
                 const compressedCodes = {}
-                compressedCodes[fileName] = codes
+                compressedCodes[customOptions.fileName] = codes
                 codes = UglifyJS.minify(compressedCodes).code
             }
             if (customOptions.swSrc) {
