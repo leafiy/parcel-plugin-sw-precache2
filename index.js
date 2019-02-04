@@ -11,7 +11,8 @@ const DEFAULT_IGNORE = [
     /sw\.js$/
 ]
 
-const getServiceWorkder = ({ outDir, customOptions = {}, rootDir }) => {
+let distDir = ''
+
 const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
     const options = {
         navigateFallback: '/index.html',
@@ -30,6 +31,8 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
 
 module.exports = bundler => {
     const { rootDir, outDir } = bundler.options
+    distDir = outDir.replace(rootDir, '').substr(1)
+
     bundler.on('bundled', (bundle) => {
         const serviceWorkerFilePath = path.resolve(outDir, DEFAULT_FILENAME)
         const customOptions = bundle.entryAsset.package.sw
@@ -43,7 +46,7 @@ module.exports = bundler => {
                 codes += readFileSync(path.join(rootDir, customOptions.swSrc))
             }
             writeFileSync(serviceWorkerFilePath, codes)
-            console.log(`😁 Service worker generation completed.`)
+            console.log(`😁 Service worker "${distDir}/${customOptions.fileName}" generated successfully.`)
         }).catch(err => {
             console.log(`🤯 Service worker generation failed: ${err}`)
         })
