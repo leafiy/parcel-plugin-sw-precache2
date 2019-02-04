@@ -2,7 +2,7 @@
   "name": "parcel-plugin-sw-precache2",
   "description": "Another Parcel plugin for service-worker with full `sw-precache` configurations support.",
   "keywords": "parcel, parcel-plugin, sw-precache, service-worker, sw, precache, pwa, offline",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "index.js",
   "author": "leafiy <t@leafiy.com>",
   "contributors": [
