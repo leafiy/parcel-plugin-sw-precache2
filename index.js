@@ -7,7 +7,8 @@ const DEFAULT_FILENAME = 'service-worker.js'
 const DEFAULT_CACHE_FILE_TYPE = `js,css,png,jpg,gif,svg,ico,eot,ttf,woff,woff2`
 const DEFAULT_IGNORE = [
     /\.map$/,
-    /service-worker\.js$/
+    /service-worker\.js$/,
+    /sw\.js$/
 ]
 
 const getServiceWorkder = ({ outDir, customOptions = {}, rootDir }) => {
