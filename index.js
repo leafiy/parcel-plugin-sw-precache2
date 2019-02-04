@@ -30,7 +30,6 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
     })
 }
 
-
 module.exports = bundler => {
     const { rootDir, outDir } = bundler.options
     distDir = outDir.replace(rootDir, '').substr(1)
@@ -47,9 +46,11 @@ module.exports = bundler => {
             }
 
             if (customOptions.swSrc) {
-                codes += UglifyJS.minify(readFileSync(path.join(rootDir, customOptions.swSrc)))
+                codes += UglifyJS.minify(readFileSync(path.join(rootDir, customOptions.swSrc), 'utf8')).code
             }
+
             writeFileSync(serviceWorkerFilePath, codes)
+
             console.log(`😁 Service worker "${distDir}/${customOptions.fileName}" generated successfully.`)
         }).catch(err => {
             console.log(`🤯 Service worker generation failed: ${err}`)
