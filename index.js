@@ -22,7 +22,8 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
             `${distDir}/index.html`
         ],
         staticFileGlobsIgnorePatterns: DEFAULT_IGNORE,
-        stripPrefix: `${distDir}/`
+        stripPrefix: `${distDir}/`,
+        minify: true
     }
     return swPrecache.generate(Object.assign({}, options, customOptions)).catch(err => {
         throw err
