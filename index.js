@@ -22,7 +22,8 @@ const getServiceWorker = ({ outDir, customOptions = {}, rootDir }) => {
             `${distDir}/index.html`
         ],
         staticFileGlobsIgnorePatterns: DEFAULT_IGNORE,
-        stripPrefix: `${distDir}/`
+        stripPrefix: `${distDir}/`,
+        minify: true
     }
     return swPrecache.generate(Object.assign({}, options, customOptions)).catch(err => {
         throw err
@@ -35,16 +36,18 @@ module.exports = bundler => {
     distDir = outDir.replace(rootDir, '').substr(1)
 
     bundler.on('bundled', (bundle) => {
-        const serviceWorkerFilePath = path.resolve(outDir, DEFAULT_FILENAME)
         const customOptions = bundle.entryAsset.package.sw
+        const serviceWorkerFilePath = path.resolve(outDir, customOptions.fileName)
+
         getServiceWorker({ outDir, customOptions, rootDir }).then(codes => {
             if (customOptions.minify) {
                 const compressedCodes = {}
                 compressedCodes[customOptions.fileName] = codes
                 codes = UglifyJS.minify(compressedCodes).code
             }
+
             if (customOptions.swSrc) {
-                codes += readFileSync(path.join(rootDir, customOptions.swSrc))
+                codes += UglifyJS.minify(readFileSync(path.join(rootDir, customOptions.swSrc)))
             }
             writeFileSync(serviceWorkerFilePath, codes)
             console.log(`😁 Service worker "${distDir}/${customOptions.fileName}" generated successfully.`)
